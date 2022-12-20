@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import MediaPicker from '@howljs/media-picker';
+import MediaPicker from 'react-native-media-picker';
 import { Button, Image, StyleSheet, View } from 'react-native';
 
 export default function App() {
-  const [image, setImage] = useState<string>()
+  const [image, setImage] = useState<string>();
   const _onPressOpen = () => {
     MediaPicker.launchGallery({
       assetType: 'image',
@@ -16,14 +16,17 @@ export default function App() {
       usedCameraButton: false,
     })
       .then((res) => {
-        setImage(res.success[0]?.uri)
+        setImage(res.success[0]?.uri);
       })
       .catch(() => {});
   };
 
   return (
     <View style={styles.container}>
-      <Image style={{width: 160, height: 160, marginBottom: 16}} source={{uri: image}} />
+      <Image
+        style={{ width: 160, height: 160, marginBottom: 16 }}
+        source={{ uri: image }}
+      />
       <Button title="Open Picker" onPress={_onPressOpen} />
     </View>
   );

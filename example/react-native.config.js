@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   dependencies: {
-    '@howljs/media-picker': {
+    'react-native-media-picker': {
       root: path.join(__dirname, '..'),
     },
   },

@@ -3,13 +3,13 @@
 ## Installation
 
 ```sh
-npm install @howljs/media-picker
+npm install react-native-media-picker
 ```
 
 ## Usage
 
 ```js
-import { multiply } from "@howljs/media-picker";
+import { multiply } from "react-native-media-picker";
 
 // ...
 

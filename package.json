@@ -1,5 +1,5 @@
 {
-  "name": "@howljs/media-picker",
+  "name": "react-native-media-picker",
   "version": "1.1.0",
   "description": "test",
   "main": "lib/commonjs/index",
