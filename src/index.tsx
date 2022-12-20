@@ -58,10 +58,10 @@ type MediaPickerType = {
   exportVideoFromId(options: ExportProps): Promise<ExportVideoResponse>;
 };
 
-const { RNMediaPicker } = NativeModules;
+const { MediaPicker } = NativeModules;
 
 const launchGallery = async (options?: MediaPickerOptions) => {
-  return RNMediaPicker.launchGallery(options);
+  return MediaPicker.launchGallery(options);
 };
 
 const exportVideoFromId = async (options: ExportProps) => {
@@ -69,7 +69,7 @@ const exportVideoFromId = async (options: ExportProps) => {
     if (Platform.OS === 'android') {
       return;
     }
-    return RNMediaPicker.exportVideoFromId(options);
+    return MediaPicker.exportVideoFromId(options);
   } catch (error) {}
 };
 

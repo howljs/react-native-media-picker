@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import MediaPicker from '@howljs/media-picker';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, Image, StyleSheet, View } from 'react-native';
 
 export default function App() {
+  const [image, setImage] = useState<string>()
   const _onPressOpen = () => {
-    MediaPicker.launchGallery()
+    MediaPicker.launchGallery({
+      assetType: 'image',
+      limit: 5,
+      numberOfColumn: 3,
+      showPreview: true,
+      maxFileSize: 5,
+      maxDuration: 20,
+      usedCameraButton: false,
+    })
       .then((res) => {
-        console.log(res);
+        setImage(res.success[0]?.uri)
       })
       .catch(() => {});
   };
 
   return (
     <View style={styles.container}>
+      <Image style={{width: 160, height: 160, marginBottom: 16}} source={{uri: image}} />
       <Button title="Open Picker" onPress={_onPressOpen} />
     </View>
   );
