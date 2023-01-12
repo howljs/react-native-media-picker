@@ -1,10 +1,15 @@
+import Foundation
+import Photos
+import UIKit
+import TLPhotoPicker
+
 @objc(MediaPicker)
 class MediaPicker: NSObject, TLPhotosPickerViewControllerDelegate {
   var viewController: TLPhotosPickerViewController? = nil
   var resolve: RCTPromiseResolveBlock? = nil
   var reject: RCTPromiseRejectBlock? = nil
   var options: [String: Any]? = nil
-  
+
   @objc(exportVideoFromId:withResolver:withRejecter:)
     func exportVideoFromId(arguments: NSDictionary?, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
         if let localIdentifier = arguments?["localIdentifier"] as? String {
@@ -35,7 +40,7 @@ class MediaPicker: NSObject, TLPhotosPickerViewControllerDelegate {
             reject("ERROR_FOUND", "localIdentifier is require", error)
         }
     }
-    
+
     @objc(launchGallery:withResolver:withRejecter:)
     func launchGallery(arguments: [String: Any]?, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
         var configure = TLPhotosPickerConfigure()
@@ -48,7 +53,7 @@ class MediaPicker: NSObject, TLPhotosPickerViewControllerDelegate {
         } else if assetType == "video" {
             configure.mediaType = PHAssetMediaType.video
         }
-        
+
         if let messages = arguments?["messages"] as? NSDictionary {
             if let tapHereToChange = messages["tapHereToChange"] as? String {
                 configure.tapHereToChange = tapHereToChange
@@ -63,7 +68,7 @@ class MediaPicker: NSObject, TLPhotosPickerViewControllerDelegate {
                 configure.emptyMessage = emptyMessage
             }
         }
-        
+
         if let maxVideoDuration = arguments!["maxVideoDuration"] as? Double {
             configure.maxVideoDuration = maxVideoDuration
         }
@@ -83,7 +88,7 @@ class MediaPicker: NSObject, TLPhotosPickerViewControllerDelegate {
             rootController?.present(self.viewController!, animated: true, completion: nil)
         }
     }
-    
+
     func dismissPhotoPicker(withTLPHAssets: [TLPHAsset]) {
         DispatchQueue.global().async {
             var medias: Array<[String: Any]> = Array<[String: Any]>()
@@ -119,7 +124,7 @@ class MediaPicker: NSObject, TLPhotosPickerViewControllerDelegate {
                             medias.append(media)
                             semaphore.signal()
                         }
-                        
+
                     })
                 } else if asset.type == .video {
                     media["type"] = "video"
@@ -144,11 +149,11 @@ class MediaPicker: NSObject, TLPhotosPickerViewControllerDelegate {
             }
         }
     }
-    
+
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
         // if you want to used phasset.
     }
-    
+
     func photoPickerDidCancel() {}
     func dismissComplete() {}
     func canSelectAsset(phAsset: PHAsset) -> Bool {
@@ -175,39 +180,39 @@ class MediaPicker: NSObject, TLPhotosPickerViewControllerDelegate {
                     isValid = false
                 }
             }
-            
+
         }
         return isValid
     }
-    
+
     func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController) {
         let alert = UIAlertController(title: "", message: self.t("maxSelection"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: self.t("ok"), style: .default, handler: nil))
         picker.present(alert, animated: true, completion: nil)
     }
-    
+
     func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) {
         let alert = UIAlertController(title: "", message: self.t("noAlbumPermission"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: self.t("ok"), style: .default, handler: nil))
         picker.present(alert, animated: true, completion: nil)
     }
-    
+
     func handleNoCameraPermissions(picker: TLPhotosPickerViewController) {
         let alert = UIAlertController(title: "", message: self.t("noCameraPermissions"), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: self.t("ok"), style: .default, handler: nil))
         picker.present(alert, animated: true, completion: nil)
     }
-    
+
     private func t(_ message: String) -> String {
         let messages = self.options!["messages"] as? NSDictionary
-        
+
         if let m = messages?[message] {
             return m as! String
         }
-        
+
         return message
     }
-    
+
     func topMostViewController() -> UIViewController? {
         var topController = UIApplication.shared.keyWindow?.rootViewController
         while topController?.presentedViewController != nil {
